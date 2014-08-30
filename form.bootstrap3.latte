@@ -21,9 +21,8 @@
 								{label $field/}
 
 								<div n:foreach="$field->getItems() as $name => $value" class="radio">
-									{var $item = $field->getControl($name)}
-									{var $label = $item[1]}
-									{var $input = $item[0]}
+									{var $label = $field->getLabelPart($name)}
+									{var $input = $field->getControlPart($name)}
 									{!$label->startTag() . $input . $label->getText() . $label->endTag()}
 								</div>
 								<span n:if="isset($field->options['description'])" class="help-block">{$field->options['description']}</span>
