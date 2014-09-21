@@ -31,8 +31,8 @@
 							<div class="form-group">
 								<div class="checkbox">
 									{label $field}
-										{!$field->control}
-										{$field->label->getText()}
+										{!$field->getControlPart()} 
+										{$field->getLabelPart()->getText()}
 									{/label}
 									<span n:if="isset($field->options['description'])" class="help-block">{$field->options['description']}</span>
 								</div>
