@@ -30,10 +30,7 @@
 						{elseif $field instanceof \Nette\Forms\Controls\Checkbox}
 							<div class="form-group">
 								<div class="checkbox">
-									{label $field}
-										{!$field->getControlPart()} 
-										{$field->getLabelPart()->getText()}
-									{/label}
+									{input $field}
 									<span n:if="isset($field->options['description'])" class="help-block">{$field->options['description']}</span>
 								</div>
 							</div>

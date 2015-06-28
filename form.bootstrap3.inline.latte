@@ -13,12 +13,12 @@
 					{block ''.$field->name.'-row'}
 						{if $field instanceof \Nette\Forms\Controls\Button}
 							<div class="form-group">
-								{!$field->control->addClass('btn')}
+								{!$field->controlPrototype->addClass('btn')}
 								<span n:if="isset($field->options['description'])" class="help-block">{$field->options['description']}</span>
 							</div>
 						{elseif $field instanceof \Nette\Forms\Controls\RadioList}
 							<div class="form-group">
-								{label $field, class => 'sr-only'/}
+								{!$field->labelPrototype->addClass('sr-only')}
 
 								<div class="radio">
 									{foreach $field->getItems() as $name => $value}
@@ -41,9 +41,9 @@
 							</div>
 						{else}
 							<div n:class="form-group, $field->required ? required" n:if="!$field->getOption('rendered')">
-								{label $field, class => 'sr-only'/}
+								{!$field->labelPrototype->addClass('sr-only')}
 
-								{!$field->control->addClass('form-control')}
+								{!$field->controlPrototype->addClass('form-control')}
 								<span n:if="isset($field->options['description'])" class="help-block">{$field->options['description']}</span>
 							</div>
 						{/if}
