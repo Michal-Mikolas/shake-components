@@ -16,7 +16,6 @@
 	},
 	"require": {
 		"php": ">=5.4.0",
-		"nette/component-model": "2.3.*",
 		"nette/reflection": "2.3.*",
 		"latte/latte": "2.3.*",
 		"nasext/visual-paginator": "*"
