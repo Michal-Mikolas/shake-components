@@ -1,4 +1,4 @@
-{? $form->elementPrototype->addClass('form-inline') }
+{?$form->elementPrototype->addClass('form-inline')}
 {form $form}
 	<div n:foreach="$form->getComponents(TRUE, 'HiddenField') as $field">{$field->control}</div>
 
