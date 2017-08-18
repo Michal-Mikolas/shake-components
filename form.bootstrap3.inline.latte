@@ -3,18 +3,20 @@
 
 	<div n:foreach="$form->errors as $error" class="alert alert-danger">{$error}</div>
 
-	<fieldset n:foreach="$form->groups as $group" n:if="$group->controls" n:block="#group">
-		<legend n:ifset="$group->options[label]">{$group->options[label]}</legend>
-		<p n:ifset="$group->options[description]">{$group->options[description]}</p>
+	<fieldset n:foreach="$form->getGroups() as $group" n:if="$group->getControls()" n:block="#group">
+		{var $groupOptions = $group->getOptions()}
+		<legend n:ifset="$groupOptions[label]">{$groupOptions[label]}</legend>
+		<p n:ifset="$groupOptions[description]">{$groupOptions[description]}</p>
 
 		{block #controls}
-			{foreach $group->controls as $field}
+			{foreach $group->getControls() as $field}
 				{if !$field->getOption('rendered')}
 					{block ''.$field->name.'-row'}
+						{var $fieldOptions = $field->options}
 						{if $field instanceof \Nette\Forms\Controls\Button}
 							<div class="form-group">
-								{!$field->control->addClass('btn')}
-								<span n:if="isset($field->options['description'])" class="help-block">{$field->options['description']}</span>
+								{$field->control->addClass('btn') |noescape}
+								<span n:if="isset($fieldOptions['description'])" class="help-block">{$fieldOptions['description']}</span>
 							</div>
 						{elseif $field instanceof \Nette\Forms\Controls\RadioList}
 							<div class="form-group">
@@ -24,27 +26,27 @@
 									{foreach $field->getItems() as $name => $value}
 										{var $label = $field->getLabelPart($name)->addClass('radio-inline')}
 										{var $input = $field->getControlPart($name)}
-										{!$label->startTag() . $input . $label->getText() . $label->endTag()}
+										{$label->startTag() . $input . $label->getText() . $label->endTag() |noescape}
 									{/foreach}
 								</div>
-								<span n:if="isset($field->options['description'])" class="help-block">{$field->options['description']}</span>
-							</div>                    
+								<span n:if="isset($fieldOptions['description'])" class="help-block">{$fieldOptions['description']}</span>
+							</div>
 						{elseif $field instanceof \Nette\Forms\Controls\Checkbox}
 							<div class="form-group">
 								<div class="checkbox">
 									{label $field, class => 'checkbox-inline'}
-										{!$field->getControlPart()} 
+										{$field->getControlPart() |noescape}
 										{$field->getLabelPart()->getText()}
 									{/label}
-									<span n:if="isset($field->options['description'])" class="help-block">{$field->options['description']}</span>
+									<span n:if="isset($fieldOptions['description'])" class="help-block">{$fieldOptions['description']}</span>
 								</div>
 							</div>
 						{else}
 							<div n:class="form-group, $field->required ? required" n:if="!$field->getOption('rendered')">
 								{label $field, class => 'sr-only'/}
 
-								{!$field->control->addClass('form-control')}
-								<span n:if="isset($field->options['description'])" class="help-block">{$field->options['description']}</span>
+								{$field->control->addClass('form-control') |noescape}
+								<span n:if="isset($fieldOptions['description'])" class="help-block">{$fieldOptions['description']}</span>
 							</div>
 						{/if}
 					{/block}
