@@ -12,7 +12,8 @@
 	],
 	"minimum-stability": "dev",
 	"autoload": {
-		"files": ["loader.php"]
+		"files": ["loader.php"],
+		"classmap": [""]
 	},
 	"require": {
 		"php": ">=5.4.0",
