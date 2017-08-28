@@ -26,6 +26,7 @@ class VisualPaginator extends \IPub\VisualPaginator\Components\Control
 	{
 		parent::__construct($templateFile, $parent, $name);
 
+		$this->getPaginator()->itemsPerPage = 10;
 		$this->setTemplateFile('bootstrap.latte');
 	}
 
