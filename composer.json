@@ -1,9 +1,9 @@
 {
 	"name": "shake/components",
 	"type": "library",
-	"description": "Universal template snippets for Nette framework applications.",
+	"description": "Universal template snippets & visual components for Nette framework applications.",
 	"keywords": ["nette", "shake", "php"],
-	"homepage": "https://bitbucket.org/nanuqcz/shake-shake/wiki",
+	"homepage": "https://bitbucket.org/nanuqcz/shake-shake",
 	"authors": [
 		{
 			"name": "Michal Mikoláš",
