@@ -41,6 +41,18 @@
 									<span n:if="isset($fieldOptions['description'])" class="help-block">{$fieldOptions['description']}</span>
 								</div>
 							</div>
+						{elseif $field instanceof \Nette\Forms\Controls\CheckboxList}
+							<div class="form-group">
+								{label $field, class => "checkbox-inline"/}
+									
+								<div n:foreach="$field->items as $key => $label" class="checkbox">
+									{$field->getLabelPart($key)->addClass('checkbox-inline')->startTag() |noescape}
+										{$field->getControlPart($key) |noescape}
+										{$label}
+									{$field->getLabelPart($key)->endTag() |noescape}
+								</div>
+								<span n:if="isset($fieldOptions['description'])" class="help-block">{$fieldOptions['description']}</span>
+							</div>
 						{else}
 							<div n:class="form-group, $field->required ? required" n:if="!$field->getOption('rendered')">
 								{label $field, class => 'sr-only'/}
