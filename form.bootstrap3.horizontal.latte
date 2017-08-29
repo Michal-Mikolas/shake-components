@@ -1,91 +1,63 @@
-{block content}
-<div class="row">
-	<div class="col-xs-12 col-md-3">
-		{php $presenter[filterForm][process]->controlPrototype
-			->addClass('btn-primary')}
-		{includeblock ''.\Shake\Components\FORM_BOOTSTRAP3_HORIZONTAL, form => $presenter[filterForm]}
-	</div>
-	<div n:snippet="candidates" class="col-xs-12 col-md-9">
-		<div class="row">
-			<div n:foreach="$candidatesPaginated as $candidate" class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-				<div class="user-widget panel panel-primary">
-					<div class="panel-heading">
-						<h3 class="panel-title">
-							{$id = $candidate->user->name[0] . $candidate->user->surname[0] . "-" . $candidate->id}
-						</h3>
-					</div>
-					<div class="panel-body">
-						<div class="working-area">
-							<h4>
-								{if $candidate->workArea}
-									{$candidate->workArea->name}
-								{/if}
-							</h4>
-						</div>
-						<div class="skills">
-							{var $classes = ['default', 'primary', 'success', 'info', 'warning', 'danger']}
-							{foreach $candidate->skills as $skill}
-								{var $class = $classes[$iterator->counter % 6]}
-								<span class="label label-{$class}">{$skill->name}</span>
-							{/foreach}
-						</div>
+{form $form, class => "form-horizontal"}
+	<div n:foreach="$form->getComponents(TRUE, 'HiddenField') as $field">{$field->control}</div>
 
-						<div class="avatar">
-							<img src="https://api.adorable.io/avatars/285/{$candidate->id}.png"/>
-						</div>
+	<div n:foreach="$form->errors as $error" class="alert alert-danger">{$error}</div>
 
-						<div class="clearfix"></div>
-						<hr/>
-						<div class="row details">
-							<div class="col-xs-6">
-								Living in:
+	<fieldset n:foreach="$form->getGroups() as $group" n:if="$group->getControls()" n:block="#group">
+		{var $groupOptions = $group->getOptions()}
+		<legend n:ifset="$groupOptions[label]">{$groupOptions[label]}</legend>
+		<p n:ifset="$groupOptions[description]">{$groupOptions[description]}</p>
+
+		{block #controls}
+			{foreach $group->getControls() as $field}
+				{if !$field->getOption('rendered')}
+					{block ''.$field->name.'-row'}
+						{var $fieldOptions = $field->options}
+						{if $field instanceof \Nette\Forms\Controls\Button}
+							<div class="form-group">
+								{$field->control->addClass('btn') |noescape}
+								<span n:if="isset($fieldOptions['description'])" class="help-block">{$fieldOptions['description']}</span>
 							</div>
-							<div class="col-xs-6">
-								{if $candidate->city}
-									{$candidate->city->name}
-								{else}
-									<i>not known</i>
-								{/if}
-							</div>
-							<div class="clearfix"></div>
-							<div class="bot-border"></div>
+						{elseif $field instanceof \Nette\Forms\Controls\RadioList}
+							<div class="form-group">
+								{label $field, class => 'col-sm-2 control-label'/}
 
-							<div class="col-xs-6">
-								Relocation:
+								<div class="col-sm-10">
+									<div n:foreach="$field->getItems() as $name => $value" class="radio">
+										{var $label = $field->getLabelPart($name)}
+										{var $input = $field->getControlPart($name)}
+										{$label->startTag() . $input . $label->getText() . $label->endTag() |noescape}
+									</div>
+									<span n:if="isset($fieldOptions['description'])" class="help-block">{$fieldOptions['description']}</span>
+								</div>
 							</div>
-							<div class="col-xs-6">
-								{$candidate->willing_to_move? 'Yes': 'No'}
+						{elseif $field instanceof \Nette\Forms\Controls\Checkbox}
+							<div class="form-group">
+								<div class="col-sm-offset-2 col-sm-10">
+									<div class="checkbox">
+										{$field->getLabelPart()->startTag() |noescape}
+											{$field->getControlPart() |noescape}
+											{$field->getLabelPart()->getText()}
+										{$field->getLabelPart()->endTag() |noescape}
+										<span n:if="isset($fieldOptions['description'])" class="help-block">{$fieldOptions['description']}</span>
+									</div>
+								</div>
 							</div>
-							<div class="clearfix"></div>
-							<div class="bot-border"></div>
+						{else}
+							<div n:class="form-group, $field->required ? required" n:if="!$field->getOption('rendered')">
+								{label $field, class => 'col-sm-2 control-label'/}
 
-							<div class="col-xs-6">
-								Expected salary:
+								<div class="col-sm-10">
+									{$field->control->addClass('form-control') |noescape}
+									<span n:if="isset($fieldOptions['description'])" class="help-block">{$fieldOptions['description']}</span>
+								</div>
 							</div>
-							<div class="col-xs-6">
-								{if $candidate->salary}
-									{$candidate->salary|number:0,'.',' '} CZK
-								{else}
-									<i>not known</i>
-								{/if}
-							</div>
-							<div class="clearfix"></div>
-							<div class="bot-border"></div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+						{/if}
+					{/block}
+				{/if}
+			{/foreach}
+		{/block}
+	</fieldset>
 
-		<center>
-			{control paginator}
-		</center>
-	</div>
-</div>
-{/block}
-
-
-{block head}
-	{include #parent}
-	<link href="{$basePath}/css/app.company.candidate.css" rel="stylesheet">
-{/block}
+	{include #controls, group => $form}
+{/form}
