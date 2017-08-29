@@ -32,10 +32,10 @@
 						{elseif $field instanceof \Nette\Forms\Controls\Checkbox}
 							<div class="form-group">
 								<div class="checkbox">
-									{label $field}
+									{$field->getLabelPart()->startTag() |noescape}
 										{$field->getControlPart() |noescape}
 										{$field->getLabelPart()->getText()}
-									{/label}
+									{$field->getLabelPart()->endTag() |noescape}
 									<span n:if="isset($fieldOptions['description'])" class="help-block">{$fieldOptions['description']}</span>
 								</div>
 							</div>
