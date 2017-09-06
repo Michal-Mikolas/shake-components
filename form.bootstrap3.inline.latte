@@ -1,12 +1,21 @@
 {form $form, class => 'form-inline'}
-	<div n:foreach="$form->getComponents(TRUE, 'HiddenField') as $field">{$field->control}</div>
+	{var $translator = $form->getTranslator()}
 
+	<div n:foreach="$form->getComponents(TRUE, 'HiddenField') as $field">{$field->control}</div>
 	<div n:foreach="$form->errors as $error" class="alert alert-danger">{$error}</div>
 
 	<fieldset n:foreach="$form->getGroups() as $group" n:if="$group->getControls()" n:block="#group">
 		{var $groupOptions = $group->getOptions()}
-		<legend n:ifset="$groupOptions[label]">{$groupOptions[label]}</legend>
-		<p n:ifset="$groupOptions[description]">{$groupOptions[description]}</p>
+		<legend n:ifset="$groupOptions[label]">
+			{$translator
+				? $translator->translate($groupOptions[label])
+				: $groupOptions[label]}
+		</legend>
+		<p n:ifset="$groupOptions[description]">
+			{$translator
+				? $translator->translate($groupOptions[description])
+				: $groupOptions[description]}
+		</p>
 
 		{block #controls}
 			{foreach $group->getControls() as $field}
@@ -44,7 +53,7 @@
 						{elseif $field instanceof \Nette\Forms\Controls\CheckboxList}
 							<div class="form-group">
 								{label $field, class => "checkbox-inline"/}
-									
+
 								<div n:foreach="$field->items as $key => $label" class="checkbox">
 									{$field->getLabelPart($key)->addClass('checkbox-inline')->startTag() |noescape}
 										{$field->getControlPart($key) |noescape}
