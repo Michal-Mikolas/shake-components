@@ -24,7 +24,7 @@ class VisualPaginator extends \IPub\VisualPaginator\Components\Control
 	 */
 	public function __construct(IContainer $parent = NULL, $name = NULL)
 	{
-		parent::__construct(NULL, $parent, $name);
+		parent::__construct(NULL, NULL, $parent, $name);
 
 		$this->getPaginator()->itemsPerPage = 10;
 		$this->setTemplateFile('bootstrap.latte');
