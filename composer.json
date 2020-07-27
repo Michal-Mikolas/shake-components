@@ -16,11 +16,11 @@
 		"classmap": [""]
 	},
 	"require": {
-		"php": ">=5.4.0",
-		"nette/application": "2.4.*",
-		"ipub/visual-paginator": "^1.0.7",
+		"php": ">=7.1.0",
+		"nette/application": "3.0.*",
+		"ipub/visual-paginator": "*",
 
-		"shake/shake": "2.4.*",
-		"shake/utils": "2.4.*"
+		"shake/shake": "3.0.*",
+		"shake/utils": "3.0.*"
 	}
 }
